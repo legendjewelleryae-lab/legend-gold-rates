@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>LEGEND JEWELRY — Live Gold Rate</title>
+
+<style>
+
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #050505;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+#screen {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: #050505;
+    background-image: url("legend_clean_background.png");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+
+/* GOLD RATES */
+
+.rate {
+    position: absolute;
+
+    top: 72%;
+
+    width: 14%;
+
+    text-align: center;
+
+    color: #ffffff;
+
+    font-weight: 700;
+
+    font-size: clamp(26px, 3vw, 58px);
+
+    line-height: 1;
+}
+
+
+/* POSITIONS */
+
+.r1 {
+    left: 12%;
+}
+
+.r2 {
+    left: 32.6%;
+}
+
+.r3 {
+    left: 53.2%;
+}
+
+.r4 {
+    left: 76%;
+}
+
+
+/* AED / g */
+
+.unit {
+    display: block;
+
+    margin-top: 14px;
+
+    color: #e8c66a;
+
+    font-weight: 700;
+
+    font-size: clamp(14px, 1.5vw, 21px);
+
+    line-height: 1.1;
+
+    letter-spacing: 0.03em;
+
+    white-space: nowrap;
+
+    background: #000000;
+
+    padding: 4px 10px 5px;
+
+    width: fit-content;
+
+    margin-left: auto;
+
+    margin-right: auto;
+}
+
+
+/* STATUS */
+
+.status {
+    position: absolute;
+
+    left: 50%;
+    bottom: 8%;
+
+    transform: translateX(-50%);
+
+    color: #e8c66a;
+
+    font-size: clamp(9px, 1.05vw, 16px);
+
+    letter-spacing: 0.25em;
+
+    white-space: nowrap;
+}
+
+.dot {
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #76d65b;
+
+    margin-right: 10px;
+
+    box-shadow: 0 0 12px #76d65b;
+}
+
+.bad .dot {
+    background: #d65b5b;
+
+    box-shadow: 0 0 12px #d65b5b;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+    .rate {
+        top: 72%;
+
+        width: 18%;
+
+        font-size: clamp(18px, 5vw, 32px);
+    }
+
+    .r1 {
+        left: 7.5%;
+    }
+
+    .r2 {
+        left: 29.5%;
+    }
+
+    .r3 {
+        left: 51.5%;
+    }
+
+    .r4 {
+        left: 75.5%;
+    }
+
+    .unit {
+        margin-top: 8px;
+
+        font-size: clamp(10px, 3vw, 17px);
+
+        padding: 3px 7px 4px;
+    }
+
+    .status {
+        bottom: 5%;
+
+        font-size: 9px;
+
+        letter-spacing: 0.12em;
+    }
+
+    .dot {
+        width: 6px;
+
+        height: 6px;
+
+        margin-right: 6px;
+    }
+}
+
+
+/* VERY SMALL PHONE */
+
+@media (max-width: 380px) {
+
+    .rate {
+        top: 71.7%;
+
+        font-size: 18px;
+    }
+
+    .unit {
+        font-size: 10px;
+
+        margin-top: 7px;
+
+        padding: 3px 6px 4px;
+    }
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div id="screen">
+
+    <div class="rate r1" id="r24">
+        —<span class="unit">AED/g</span>
+    </div>
+
+    <div class="rate r2" id="r22">
+        —<span class="unit">AED/g</span>
+    </div>
+
+    <div class="rate r3" id="r21">
+        —<span class="unit">AED/g</span>
+    </div>
+
+    <div class="rate r4" id="r18">
+        —<span class="unit">AED/g</span>
+    </div>
+
+    <div class="status">
+        <span class="dot"></span>
+        <span id="st">CONNECTING...</span>
+    </div>
+
+</div>
+
+
+<script>
+
+const API_URL = "/api/rates";
+
+const ids = {
+    "24K": "r24",
+    "22K": "r22",
+    "21K": "r21",
+    "18K": "r18"
+};
+
+
+function show(rates, updated) {
+
+    for (const k in ids) {
+
+        const el =
+            document.getElementById(ids[k]);
+
+        const v =
+            rates[k];
+
+        el.firstChild.textContent =
+            (v == null
+                ? "—"
+                : Number(v).toFixed(2)
+            );
+    }
+
+    document.getElementById("st").textContent =
+        updated
+        ? "UPDATED " +
+          new Date(updated).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit"
+          })
+        : "LIVE GOLD RATE";
+
+    document.body.classList.remove("bad");
+}
+
+
+async function refresh() {
+
+    try {
+
+        const res = await fetch(
+            API_URL + "?time=" + Date.now(),
+            {
+                cache: "no-store"
+            }
+        );
+
+        if (!res.ok) {
+            throw new Error(res.status);
+        }
+
+        const data =
+            await res.json();
+
+        show(
+            data.rates,
+            data.updated_at
+        );
+
+    } catch (e) {
+
+        document.getElementById("st").textContent =
+            "RATE SOURCE OFFLINE";
+
+        document.body.classList.add("bad");
+    }
+}
+
+
+refresh();
+
+setInterval(
+    refresh,
+    60000
+);
+
+</script>
+
+</body>
+</html>
