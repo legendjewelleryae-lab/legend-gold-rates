@@ -132,7 +132,7 @@ body {
 
 
 /* =========================================================
-   STATUS
+   STATUS / UPDATE TIME
    ========================================================= */
 
 .status {
@@ -187,13 +187,6 @@ body {
 
 @media (max-width: 600px) {
 
-    /*
-     * مهم:
-     * التصميم الأصلي أفقي 16:9.
-     * لذلك على الموبايل نعرضه بنفس النسبة
-     * بدل ما نمدده بالطول.
-     */
-
     body {
         background: #050505;
     }
@@ -203,13 +196,10 @@ body {
         width: 100vw;
 
         /*
-         * 16:9
+         * Original design ratio: 16:9
          */
         height: 56.25vw;
 
-        /*
-         * توسيط التصميم في شاشة الموبايل
-         */
         position: absolute;
 
         left: 0;
@@ -227,19 +217,18 @@ body {
 
 
     /* -----------------------------------------------------
-       RATES
+       SMALLER GOLD NUMBERS
        ----------------------------------------------------- */
 
     .rate {
 
-        /*
-         * نفس النسبة داخل التصميم
-         */
         top: 72%;
 
         width: 18%;
 
-        font-size: clamp(18px, 5vw, 32px);
+        font-size: clamp(16px, 4.2vw, 26px);
+
+        line-height: 1;
     }
 
 
@@ -272,23 +261,26 @@ body {
 
         margin-top: 8px;
 
-        font-size: clamp(10px, 3vw, 17px);
+        font-size: clamp(9px, 2.6vw, 15px);
 
         padding: 3px 7px 4px;
     }
 
 
     /* -----------------------------------------------------
-       STATUS
+       UPDATE TIME
        ----------------------------------------------------- */
 
     .status {
 
-        bottom: 5%;
+        /*
+         * ننزله أكثر حتى يبتعد عن AED/g
+         */
+        bottom: -13%;
 
-        font-size: 9px;
+        font-size: 8px;
 
-        letter-spacing: 0.12em;
+        letter-spacing: 0.10em;
     }
 
 
@@ -298,11 +290,11 @@ body {
 
     .dot {
 
-        width: 6px;
+        width: 5px;
 
-        height: 6px;
+        height: 5px;
 
-        margin-right: 6px;
+        margin-right: 5px;
     }
 }
 
@@ -317,17 +309,27 @@ body {
 
         top: 71.7%;
 
-        font-size: 18px;
+        font-size: 16px;
     }
 
 
     .unit {
 
-        font-size: 10px;
+        font-size: 9px;
 
         margin-top: 7px;
 
         padding: 3px 6px 4px;
+    }
+
+
+    .status {
+
+        bottom: -14%;
+
+        font-size: 7px;
+
+        letter-spacing: 0.08em;
     }
 }
 
@@ -422,14 +424,11 @@ function show(rates, updated) {
 
     for (const k in ids) {
 
-
         const el =
             document.getElementById(ids[k]);
 
-
         const v =
             rates[k];
-
 
         el.firstChild.textContent =
 
@@ -474,9 +473,7 @@ function show(rates, updated) {
 
 async function refresh() {
 
-
     try {
-
 
         const res = await fetch(
 
@@ -514,7 +511,6 @@ async function refresh() {
     }
 
     catch (e) {
-
 
         document.getElementById("st").textContent =
 
