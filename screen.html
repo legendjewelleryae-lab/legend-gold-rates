@@ -49,13 +49,23 @@ body {
 
     text-align: center;
 
-    color: #ffffff;
+    color: #000000;
 
     font-weight: 700;
 
     font-size: clamp(26px, 3vw, 58px);
 
     line-height: 1;
+}
+
+.price {
+    display: inline-block;
+    color: #000000;
+    background: rgba(255, 255, 255, 0.96);
+    padding: 7px 18px 8px;
+    min-width: 82%;
+    border-radius: 4px;
+    box-shadow: 0 1px 8px rgba(255, 255, 255, 0.18);
 }
 
 
@@ -178,6 +188,11 @@ body {
         left: 75.5%;
     }
 
+    .price {
+        min-width: 82%;
+        padding: 4px 8px 5px;
+    }
+
     .unit {
         margin-top: 8px;
 
@@ -214,6 +229,10 @@ body {
         font-size: 18px;
     }
 
+    .price {
+        padding: 3px 6px 4px;
+    }
+
     .unit {
         font-size: 10px;
 
@@ -232,19 +251,19 @@ body {
 <div id="screen">
 
     <div class="rate r1" id="r24">
-        —<span class="unit">AED/g</span>
+        <span class="price">—</span><span class="unit">AED/g</span>
     </div>
 
     <div class="rate r2" id="r22">
-        —<span class="unit">AED/g</span>
+        <span class="price">—</span><span class="unit">AED/g</span>
     </div>
 
     <div class="rate r3" id="r21">
-        —<span class="unit">AED/g</span>
+        <span class="price">—</span><span class="unit">AED/g</span>
     </div>
 
     <div class="rate r4" id="r18">
-        —<span class="unit">AED/g</span>
+        <span class="price">—</span><span class="unit">AED/g</span>
     </div>
 
     <div class="status">
@@ -277,7 +296,8 @@ function show(rates, updated) {
         const v =
             rates[k];
 
-        el.firstChild.textContent =
+        const price = el.querySelector(".price");
+        price.textContent =
             (v == null
                 ? "—"
                 : Number(v).toFixed(2)

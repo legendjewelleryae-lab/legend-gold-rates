@@ -1,28 +1,33 @@
 LEGEND JEWELRY — LIVE GOLD RATE SCREEN
 
 Files:
-- screen.html              The full-screen kiosk display.
-- legend_clean_background.png  Your Legend-branded artwork, cleaned for live values.
-- server.py                Fetches the Dubai City of Gold page and exposes /api/rates.
-- requirements.txt         Python packages.
+- screen.html                 Full-screen gold-rate display.
+- legend_clean_background.png Legend Jewelry background artwork with blank rate areas.
+- server.py                   Flask server that fetches the public Dubai gold-rate page and exposes /api/rates.
+- requirements.txt            Python dependencies.
+- last_rates.json             Last cached successful rates.
+- render.yaml                 Render web-service configuration.
 
-RUN:
-1) Install Python 3 on the computer/mini-PC that will drive the kiosk.
-2) Open Terminal/CMD in this folder.
-3) pip install -r requirements.txt
-4) python server.py
-5) Open screen.html in Chrome.
-6) Press F11 for full screen.
+DESIGN:
+- Uses the new Legend Jewelry marble artwork.
+- Live rate numbers are black.
+- 24K / 22K / 21K / 18K rates are updated from /api/rates.
+- The screen refreshes rates every 60 seconds.
 
-The screen checks the server every 60 seconds.
-The server stores the last successful official rate, so a temporary connection error
-does not replace the displayed price with a made-up number.
+LOCAL RUN:
+1) Install Python 3.
+2) pip install -r requirements.txt
+3) python server.py
+4) Open http://localhost:8787/ in Chrome.
+5) Press F11 for full screen.
 
-IMPORTANT:
-Dubai City of Gold states that its suggested retail jewellery rate is updated three
-times daily (9 AM, 3 PM and 8 PM UAE time). This package reads the public page rather
-than claiming an official public API. If the website changes its HTML or blocks the
-server, the parser may need adjustment.
+RENDER:
+1) Upload these files to the GitHub repository connected to Render.
+2) In Render, create a Web Service from the repository, or use render.yaml.
+3) Build Command: pip install -r requirements.txt
+4) Start Command: python server.py
+5) Render supplies PORT automatically; server.py uses it.
 
-For a permanent kiosk, the next step is hosting server.py on a small always-on cloud
-server and changing API_URL in screen.html from localhost to that HTTPS address.
+The server keeps the last successful rate in last_rates.json if the source page is
+temporarily unavailable. The source page is public and is parsed server-side; it is
+not an official API. If the source website changes its HTML, the parser may need an update.
