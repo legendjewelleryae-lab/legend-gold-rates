@@ -233,14 +233,14 @@ body {
        POSITIONS
        ----------------------------------------------------- */
 
-    /* 24K — moved 2% further right */
+    /* 24K — moved 1% left */
 
     .r1 {
-        left: 11%;
+        left: 10%;
     }
 
 
-    /* 22K — moved slightly right */
+    /* 22K */
 
     .r2 {
         left: 31%;
@@ -254,7 +254,7 @@ body {
     }
 
 
-    /* 18K — moved 2% left */
+    /* 18K */
 
     .r4 {
         left: 71.5%;
@@ -283,8 +283,6 @@ body {
 
         bottom: 2%;
 
-        /* slightly larger */
-
         font-size: 9px;
 
         letter-spacing: 0.10em;
@@ -303,6 +301,81 @@ body {
 
         margin-right: 5px;
     }
+
+
+    /* =====================================================
+       MOVING LEGEND JEWELRY BAR
+       MOBILE ONLY
+       ===================================================== */
+
+    .ticker {
+
+        position: absolute;
+
+        left: 0;
+
+        bottom: 0;
+
+        width: 100%;
+
+        height: 30px;
+
+        background: #000000;
+
+        overflow: hidden;
+
+        display: flex;
+
+        align-items: center;
+
+        white-space: nowrap;
+
+        z-index: 20;
+    }
+
+
+    .ticker-track {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        white-space: nowrap;
+
+        animation: legendMove 12s linear infinite;
+
+        will-change: transform;
+    }
+
+
+    .ticker-text {
+
+        display: inline-block;
+
+        color: #e8c66a;
+
+        font-size: 15px;
+
+        font-weight: 900;
+
+        letter-spacing: 0.18em;
+
+        padding-right: 80px;
+    }
+
+
+    @keyframes legendMove {
+
+        0% {
+            transform: translateX(100vw);
+        }
+
+        100% {
+            transform: translateX(-100%);
+        }
+
+    }
+
 }
 
 
@@ -338,6 +411,23 @@ body {
 
         letter-spacing: 0.08em;
     }
+
+
+    /* SMALLER TICKER */
+
+    .ticker {
+
+        height: 27px;
+    }
+
+
+    .ticker-text {
+
+        font-size: 13px;
+
+        padding-right: 70px;
+    }
+
 }
 
 </style>
@@ -391,6 +481,32 @@ body {
 
     </div>
 
+
+</div>
+
+
+<!-- =======================================================
+     MOVING LEGEND JEWELRY BAR
+     MOBILE ONLY
+     ======================================================= -->
+
+<div class="ticker">
+
+    <div class="ticker-track">
+
+        <span class="ticker-text">
+            LEGEND JEWELRY
+        </span>
+
+        <span class="ticker-text">
+            LEGEND JEWELRY
+        </span>
+
+        <span class="ticker-text">
+            LEGEND JEWELRY
+        </span>
+
+    </div>
 
 </div>
 
